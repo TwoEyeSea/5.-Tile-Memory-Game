@@ -1,1 +1,51 @@
+html {
+    background-color: aqua;
+    font-size: 62.5%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 
+
+.game_section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50vh;
+    margin-left: 2rem;
+}   
+
+h1{
+    font-size: 3rem;
+    text-decoration: underline;
+}
+.grid{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 1rem;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    width: 300px;
+}
+
+.tile {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgb(189, 189, 189);
+    font-size: 3rem;
+    width: 5rem;
+    height: 5rem;
+    transition: 0.3s;
+    }
+
+.tile:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+    background-color: crimson;
+}
+
+.score-info{
+    margin-top: 2rem;
+    font-size: 1.5rem;
+}
