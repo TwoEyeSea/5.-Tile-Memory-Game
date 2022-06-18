@@ -26,6 +26,7 @@ h1{
     width: 300px;
 }
 
+
 .tile {
     display: flex;
     justify-content: center;
@@ -37,12 +38,22 @@ h1{
     width: 5rem;
     height: 5rem;
     transition: 0.3s;
-    }
+    margin:0.5rem;
+}
 
 .tile:hover{
     cursor: pointer;
     transform: scale(1.2);
     background-color: crimson;
+}
+
+.tile.clickable:hover {
+    color: greenyellow;
+}
+
+.tile.comparing{
+    transform: scale(1.2);
+    background-color: Blue;
 }
 
 .score-info{
