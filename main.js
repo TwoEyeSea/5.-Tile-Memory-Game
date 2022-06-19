@@ -14,14 +14,12 @@ const tile_D_Object = new TileObject(tileD);
 const tile_E_Object = new TileObject(tileE);
 const tile_F_Object = new TileObject(tileF);
 
-console.log(tile_A_Object);
-console.log(tile_B_Object);
-console.log(tile_C_Object);
-console.log(tile_D_Object);
-console.log(tile_E_Object);
-console.log(tile_F_Object);
-
-// Game
+// Tile comparison Object
+const comparingTiles = {
+  toCompare: 0,
+  tile1: null,
+  tile2: null,
+};
 
 // Arrays
 const imageArray = ["cat", "cat", "dog", "dog", "ocelot", "ocelot"];
@@ -64,37 +62,62 @@ function determineTile() {
 }
 determineTile();
 
-// Get random image from array while removing array elements.
-function randomImage(array) {
-  const arrayIndex = Math.floor(Math.random() * array.length);
-  const arrayElement = array[arrayIndex];
-  array.splice(arrayIndex, 1);
-  return arrayElement;
-}
-
-// Assign Image to tile
-function assignImage(tileObject) {
-  const imageIdentifier = randomImage(imageArray);
-  console.log("im responsive");
-
-  if (tileObject.isClickable) {
-    tileObject.comparing = true;
-    tileObject.isClickable = false;
-  }
-
-  // Logic to assign images to tile.
-
-  // const imageElement = document.createElement("img");
-  // imageElement.setAttribute("src", `${imageIdentifier}`);
-  // tile.appendChild(imageElement);
-  // console.log(imageArray);
-  // console.log();
-}
-
-//tile Objact Constructor Function
+//tile Object Constructor Function
 function TileObject(tile) {
   this.tile = tile;
   this.isSelected = false;
   this.isClickable = true;
   this.comparing = false;
+  this.imageID = true;
 }
+
+// Get random image from array while removing array elements.
+function randomImage(array, tileObject) {
+  // Logic for getting a random array image element
+  const arrayIndex = Math.floor(Math.random() * array.length);
+  const arrayElement = array[arrayIndex];
+  array.splice(arrayIndex, 1);
+
+  // Image ID for tile objects
+  tileObject.imageID = `${arrayElement}`;
+  return arrayElement;
+}
+
+//Function Highlight Tile
+function highlightTile(tileObject) {
+  if (!tileObject.isClickable) {
+    tileObject.tile.classList.remove("clickable");
+    tileObject.tile.classList.add("comparing");
+  }
+}
+
+// Assign Image to tile
+function assignImage(tileObject) {
+  const imageIdentifier = randomImage(imageArray, tileObject);
+  console.log(`i'm responsive guys :D`);
+
+  if (tileObject.isClickable) {
+    tileObject.comparing = true;
+    tileObject.isClickable = false;
+    highlightTile(tileObject);
+  }
+  // Logic to assign images to tile.
+  const imageElement = document.createElement("img");
+  imageElement.setAttribute("src", `${imageIdentifier}`);
+  tileObject.tile.appendChild(imageElement);
+  console.log(imageArray);
+  console.log();
+}
+
+// Tile Comparison Object Test
+
+// function checkObjectfunction(object) {
+//   if (!object.tile1) {
+//     object.tile1 = tileA;
+//     console.log("marko");
+//   }
+//   console.log("polo");
+// }
+
+// console.log(comparingTiles.tile1);
+// checkObjectfunction(comparingTiles);
