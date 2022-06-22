@@ -39,9 +39,9 @@ const tileGameProperties = {
     }
   },
 };
-
 // Arrays
-const imageArray = ["cat", "cat", "dog", "dog", "ocelot", "ocelot"];
+//"dog", "dog","cat", "cat",
+const imageArray = ["ocelot", "ocelot"];
 // Image Array
 const resetArray = imageArray;
 
@@ -98,7 +98,7 @@ function tileGame(tileObject) {
   updateGameProperties(tileObject);
 
   //assign Image
-  const imageIdentifier = assignRandomImage(imageArray, tileObject);
+  const imageSource = assignRandomImage(imageArray, tileObject);
   console.log(`i'm responsive guys :D`);
   console.log(tileGameProperties.tileCount);
 
@@ -110,7 +110,7 @@ function tileGame(tileObject) {
 
   // Logic to assign images to tile.
   const imageElement = document.createElement("img");
-  imageElement.setAttribute("src", `${imageIdentifier}`);
+  imageElement.setAttribute("src", `${imageSource}`);
   tileObject.tile.appendChild(imageElement);
   console.log(imageArray);
   compareImages();
@@ -154,7 +154,7 @@ function highlightTile(tileObject) {
 
 function compareImages() {
   if (tileGameProperties.tileCount === 2) {
-    if (tileGameProperties.tile1 === tileGameProperties.tile2) {
+    if (tileGameProperties.tile1.imageID === tileGameProperties.tile2.imageID) {
       console.log("Congratulations you're a winner!");
       return tileGameProperties.reset();
     }
