@@ -14,6 +14,14 @@ const tile_D_Object = new TileObject(tileD);
 const tile_E_Object = new TileObject(tileE);
 const tile_F_Object = new TileObject(tileF);
 
+// Image Object
+const imageObjectA1 = new ImageObject();
+const imageObjectA2 = new ImageObject();
+const imageObjectB1 = new ImageObject();
+const imageObjectB2 = new ImageObject();
+const imageObjectC1 = new ImageObject();
+const imageObjectC2 = new ImageObject();
+
 // Tile comparison Object
 const tileGameProperties = {
   tileCount: 0,
@@ -39,9 +47,12 @@ const tileGameProperties = {
     }
   },
 };
+
 // Arrays
+const imageObjectArray = [imageObjectA1, imageObjectA2, imageObjectB1, imageObjectB2, imageObjectC1, imageObjectC2];
 //"dog", "dog","cat", "cat",
-const imageArray = ["ocelot", "ocelot"];
+const imageArray = ["ocelot", "mouse"];
+
 // Image Array
 const resetArray = imageArray;
 
@@ -56,40 +67,57 @@ function TileObject(tile) {
   this.isClickable = true;
   this.comparing = false;
   this.imageID = true;
+  this.imageObject = null;
+}
+
+// image Object Constructor Function
+function ImageObject() {
+  const imageElement = document.createElement("img");
+  this.imgElement = imageElement;
 }
 
 // function to determine which tile is being selected - passes specific tiles to the game function
 function determineTile() {
   tileA.addEventListener("click", () => {
-    if (tile_A_Object.isClickable) {
+    if (tile_A_Object.isClickable && !tile_A_Object.imageObject) {
+      assignImageObject(tile_A_Object);
       tileGame(tile_A_Object);
     }
   });
   tileB.addEventListener("click", () => {
-    if (tile_B_Object.isClickable) {
+    if (tile_B_Object.isClickable && !tile_B_Object.imageObject) {
+      assignImageObject(tile_B_Object);
       tileGame(tile_B_Object);
     }
   });
   tileC.addEventListener("click", () => {
-    if (tile_C_Object.isClickable) {
+    if (tile_C_Object.isClickable && !tile_C_Object.imageObject) {
+      assignImageObject(tile_C_Object);
       tileGame(tile_C_Object);
     }
   });
   tileD.addEventListener("click", () => {
-    if (tile_D_Object.isClickable) {
+    if (tile_D_Object.isClickable && !tile_D_Object.imageObject) {
+      assignImageObject(tile_D_Object);
       tileGame(tile_D_Object);
     }
   });
   tileE.addEventListener("click", () => {
-    if (tile_E_Object.isClickable) {
+    if (tile_E_Object.isClickable && !tile_E_Object.imageObject) {
+      assignImageObject(tile_E_Object);
       tileGame(tile_E_Object);
     }
   });
   tileF.addEventListener("click", () => {
-    if (tile_F_Object.isClickable) {
+    if (tile_F_Object.isClickable && !tile_F_Object.imageObject) {
+      assignImageObject(tile_F_Object);
       tileGame(tile_F_Object);
     }
   });
+}
+
+function assignImageObject(tileObject) {
+  tileObject.imageObject = imageObjectArray.shift();
 }
 
 // Tile game main function
@@ -98,6 +126,7 @@ function tileGame(tileObject) {
   updateGameProperties(tileObject);
 
   //assign Image
+  const tileImage = tileObject.imageObject.imgElement;
   const imageSource = assignRandomImage(imageArray, tileObject);
   console.log(`i'm responsive guys :D`);
   console.log(tileGameProperties.tileCount);
@@ -109,9 +138,9 @@ function tileGame(tileObject) {
   }
 
   // Logic to assign images to tile.
-  const imageElement = document.createElement("img");
-  imageElement.setAttribute("src", `${imageSource}`);
-  tileObject.tile.appendChild(imageElement);
+  tileImage.setAttribute("class", "visible");
+  tileImage.setAttribute("src", `${imageSource}`);
+  tileObject.tile.appendChild(tileImage);
   console.log(imageArray);
   compareImages();
 }
@@ -148,7 +177,7 @@ function assignRandomImage(array, tileObject) {
 function highlightTile(tileObject) {
   if (!tileObject.isClickable) {
     tileObject.tile.classList.toggle("clickable");
-    tileObject.tile.classList.add("comparing");
+    tileObject.tile.classList.toggle("comparing");
   }
 }
 
@@ -159,20 +188,15 @@ function compareImages() {
       return tileGameProperties.reset();
     }
     console.log("unfortunatley you lose");
+    tileGameProperties.tile1.tile.classList.toggle("clickable");
+    tileGameProperties.tile1.tile.classList.toggle("comparing");
+    tileGameProperties.tile1.tile.classList.toggle("visible");
+
+    tileGameProperties.tile2.tile.classList.toggle("clickable");
+    tileGameProperties.tile2.tile.classList.toggle("comparing");
+    tileGameProperties.tile2.tile.classList.toggle("visible");
+
     return tileGameProperties.reset();
   }
   return;
 }
-
-// Tile Comparison Object Test
-
-// function checkObjectfunction(object) {
-//   if (!object.tile1) {
-//     object.tile1 = tileA;
-//     console.log("marko");
-//   }
-//   console.log("polo");
-// }
-
-// console.log(comparingTiles.tile1);
-// checkObjectfunction(comparingTiles);
