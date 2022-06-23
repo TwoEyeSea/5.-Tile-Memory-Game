@@ -53,7 +53,8 @@ const tileGameProperties = {
 const imageObjectArray = [imageObjectA1, imageObjectA2, imageObjectB1, imageObjectB2, imageObjectC1, imageObjectC2];
 
 // Image Sources for <img> elements
-const imageSourceArray = ["dog", "dog", "cat", "cat", "ocelot", "mouse"];
+// "cat", "cat", "ocelot", "mouse"
+const imageSourceArray = ["dog", "mouse"];
 
 // tileId's to place within tileObjects and img elements
 const tileIdArray = ["tileA", "tileB", "tileC", "tileD", "tileE", "tileF"];
@@ -184,7 +185,10 @@ function tileGame(tileObject) {
     tileObject.isClickable = false;
     highlightTile(tileObject);
   }
-  compareImages();
+
+  if (tileGameProperties.tileCount === 2) {
+    compareImages();
+  }
 }
 
 // Utility functions
@@ -212,23 +216,25 @@ function highlightTile(tileObject) {
     imgElement.classList.toggle("invisible");
   }
 }
+
 // Function to compare images within the tileGameProperties Object
-// function compareImages() {
-//   if (tileGameProperties.tileCount === 2) {
-//     if (tileGameProperties.tile1.imageID === tileGameProperties.tile2.imageID) {
-//       console.log("Congratulations you're a winner!");
-//       return tileGameProperties.reset();
-//     }
-//     console.log("unfortunatley you lose");
-//     tileGameProperties.tile1.tile.classList.toggle("clickable");
-//     tileGameProperties.tile1.tile.classList.toggle("comparing");
-//     tileGameProperties.tile1.tile.classList.toggle("visible");
+function compareImages() {
+  const imgTile1 = document.querySelector(`#${tileGameProperties.tile1.tileId}`).getAttribute("src");
+  const imgTile2 = document.querySelector(`#${tileGameProperties.tile2.tileId}`).getAttribute("src");
 
-//     tileGameProperties.tile2.tile.classList.toggle("clickable");
-//     tileGameProperties.tile2.tile.classList.toggle("comparing");
-//     tileGameProperties.tile2.tile.classList.toggle("visible");
+  if (imgTile1 === imgTile2) {
+    console.log("Congratulations you're a winner!");
+    return tileGameProperties.reset();
+  }
 
-//     return tileGameProperties.reset();
-//   }
-//   return;
-// }
+  console.log("unfortunatley you lose");
+  // tileGameProperties.tile1.tile.classList.toggle("clickable");
+  // tileGameProperties.tile1.tile.classList.toggle("comparing");
+  // tileGameProperties.tile1.tile.classList.toggle("visible");
+
+  // tileGameProperties.tile2.tile.classList.toggle("clickable");
+  // tileGameProperties.tile2.tile.classList.toggle("comparing");
+  // tileGameProperties.tile2.tile.classList.toggle("visible");
+
+  return tileGameProperties.reset();
+}
