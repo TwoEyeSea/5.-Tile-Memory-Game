@@ -70,7 +70,7 @@ determineTile();
 function TileObject(tile) {
   this.tile = tile;
   this.tileId = null;
-  this.isSelected = false;
+  // this.isSelected = false;
   this.isClickable = true;
   this.comparing = false;
   this.imageObject = null;
@@ -86,27 +86,24 @@ function ImageObject() {
 // Function to assign imageObjects to tileObjects and to assign image sources randomly to imageObject img elements
 function initTileObjects() {
   assignImageObject(tile_A_Object);
-  assignTileId(tile_A_Object);
-  assignImageSource(tile_A_Object, tile_A_Object.imageObject);
-
   assignImageObject(tile_B_Object);
-  assignTileId(tile_B_Object);
-  assignImageSource(tile_B_Object, tile_B_Object.imageObject);
-
   assignImageObject(tile_C_Object);
-  assignTileId(tile_C_Object);
-  assignImageSource(tile_C_Object, tile_C_Object.imageObject);
-
   assignImageObject(tile_D_Object);
-  assignTileId(tile_D_Object);
-  assignImageSource(tile_D_Object, tile_D_Object.imageObject);
-
   assignImageObject(tile_E_Object);
-  assignTileId(tile_E_Object);
-  assignImageSource(tile_E_Object, tile_E_Object.imageObject);
-
   assignImageObject(tile_F_Object);
+
+  assignTileId(tile_A_Object);
+  assignTileId(tile_B_Object);
+  assignTileId(tile_C_Object);
+  assignTileId(tile_D_Object);
+  assignTileId(tile_E_Object);
   assignTileId(tile_F_Object);
+
+  assignImageSource(tile_A_Object, tile_A_Object.imageObject);
+  assignImageSource(tile_B_Object, tile_B_Object.imageObject);
+  assignImageSource(tile_C_Object, tile_C_Object.imageObject);
+  assignImageSource(tile_D_Object, tile_D_Object.imageObject);
+  assignImageSource(tile_E_Object, tile_E_Object.imageObject);
   assignImageSource(tile_F_Object, tile_F_Object.imageObject);
 }
 // Function to assign tileId to tileObect
@@ -208,9 +205,11 @@ function updateGameProperties(tileObject) {
 
 //Function Highlight Tile
 function highlightTile(tileObject) {
+  const imgElement = document.querySelector(`#${tileObject.tileId}`);
   if (!tileObject.isClickable) {
     tileObject.tile.classList.toggle("clickable");
     tileObject.tile.classList.toggle("comparing");
+    imgElement.classList.toggle("invisible");
   }
 }
 // Function to compare images within the tileGameProperties Object
