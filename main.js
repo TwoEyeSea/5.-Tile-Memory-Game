@@ -1,3 +1,5 @@
+// Constants
+
 // Define html elements as constants for javascript
 const tileA_div = document.querySelector("#tile-A");
 const tileB_div = document.querySelector("#tile-B");
@@ -48,13 +50,17 @@ const tileGameProperties = {
   },
 };
 
+const roundTracker = {
+  // 4 attempts can be made per round
+  attempts: 0,
+};
+
 // Arrays
 // ImageObjects
 const imageObjectArray = [imageObjectA1, imageObjectA2, imageObjectB1, imageObjectB2, imageObjectC1, imageObjectC2];
 
 // Image Sources for <img> elements
-// "cat", "cat", "ocelot", "mouse"
-const imageSourceArray = ["dog", "mouse"];
+const imageSourceArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
 
 // tileId's to place within tileObjects and img elements
 const tileIdArray = ["tileA", "tileB", "tileC", "tileD", "tileE", "tileF"];
@@ -86,6 +92,8 @@ function ImageObject() {
 // Launch functions
 // Function to assign imageObjects to tileObjects and to assign image sources randomly to imageObject img elements
 function initTileObjects() {
+  // function to reset tile id
+  // if ( (tile_A_Object.imageObject) {() => tile inner html = "";};
   assignImageObject(tile_A_Object);
   assignImageObject(tile_B_Object);
   assignImageObject(tile_C_Object);
@@ -191,6 +199,15 @@ function tileGame(tileObject) {
   }
 }
 
+function newRound() {
+  let round = 0;
+  if (roundTracker.attempts > 3) {
+    console.log("new round");
+    roundTracker.attempts = 0;
+    console.log(roundTracker);
+  }
+}
+
 // Utility functions
 // Increment tileGameProperties.tileCount
 function updateGameProperties(tileObject) {
@@ -217,24 +234,40 @@ function highlightTile(tileObject) {
   }
 }
 
-// Function to compare images within the tileGameProperties Object
+// Function to compare 2images within the tileGameProperties Object
 function compareImages() {
+  // constants for toggling img element class
+  //constants for comparing img element sources
   const imgTile1 = document.querySelector(`#${tileGameProperties.tile1.tileId}`).getAttribute("src");
   const imgTile2 = document.querySelector(`#${tileGameProperties.tile2.tileId}`).getAttribute("src");
 
   if (imgTile1 === imgTile2) {
     console.log("Congratulations you're a winner!");
+
+    //update roundTracker
+    roundTracker.attempts++;
+
+    // ** function update your score
+    newRound();
     return tileGameProperties.reset();
   }
 
   console.log("unfortunatley you lose");
-  // tileGameProperties.tile1.tile.classList.toggle("clickable");
-  // tileGameProperties.tile1.tile.classList.toggle("comparing");
-  // tileGameProperties.tile1.tile.classList.toggle("visible");
-
-  // tileGameProperties.tile2.tile.classList.toggle("clickable");
-  // tileGameProperties.tile2.tile.classList.toggle("comparing");
-  // tileGameProperties.tile2.tile.classList.toggle("visible");
-
+  roundTracker.attempts++;
+  // **update failed attempts
+  noPair();
+  newRound();
   return tileGameProperties.reset();
+}
+
+// Function to toggle tile classes and tileObject props
+function noPair() {
+  document.querySelector(`#${tileGameProperties.tile1.tileId}`).classList.toggle("invisible");
+  document.querySelector(`#${tileGameProperties.tile2.tileId}`).classList.toggle("invisible");
+  tileGameProperties.tile1.tile.classList.toggle("comparing");
+  tileGameProperties.tile2.tile.classList.toggle("comparing");
+  tileGameProperties.tile1.tile.classList.toggle("clickable");
+  tileGameProperties.tile2.tile.classList.toggle("clickable");
+  tileGameProperties.tile1.isClickable = true;
+  tileGameProperties.tile2.isClickable = true;
 }
