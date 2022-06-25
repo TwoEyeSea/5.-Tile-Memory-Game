@@ -56,17 +56,16 @@ const roundTracker = {
 };
 
 // Arrays
+// tile Objects
+const tileObjectArray = [tile_A_Object, tile_B_Object, tile_C_Object, tile_D_Object, tile_E_Object, tile_F_Object];
 // ImageObjects
 const imageObjectArray = [imageObjectA1, imageObjectA2, imageObjectB1, imageObjectB2, imageObjectC1, imageObjectC2];
 
 // Image Sources for <img> elements
-const imageSourceArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
-
+let imageSourceArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
+let resetArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
 // tileId's to place within tileObjects and img elements
 const tileIdArray = ["tileA", "tileB", "tileC", "tileD", "tileE", "tileF"];
-
-// Image Array
-const resetArray = imageSourceArray;
 
 // Functions
 // Function on launch
@@ -81,6 +80,23 @@ function TileObject(tile) {
   this.isClickable = true;
   this.comparing = false;
   this.imageObject = null;
+
+  this.init = function () {
+    let initValues = {};
+    for (let property in this) {
+      if (this.hasOwnProperty(property) && property != "originalValues") {
+        initValues[property] = this[property];
+        console.log("I am indeed a functioning function :)");
+      }
+    }
+    this.initValues = initValues;
+  };
+  this.reset = function () {
+    for (let property in this.initValues) {
+      this[property] = this.initValues[property];
+      console.log("i'm a functional function after all!");
+    }
+  };
 }
 
 // ImageObject Constructor Function
@@ -93,49 +109,50 @@ function ImageObject() {
 // Function to assign imageObjects to tileObjects and to assign image sources randomly to imageObject img elements
 function initTileObjects() {
   // function to reset tile id
-  // if ( (tile_A_Object.imageObject) {() => tile inner html = "";};
-  assignImageObject(tile_A_Object);
-  assignImageObject(tile_B_Object);
-  assignImageObject(tile_C_Object);
-  assignImageObject(tile_D_Object);
-  assignImageObject(tile_E_Object);
-  assignImageObject(tile_F_Object);
+  // if (!tile_A_Object.imageObject) {
+  //   initialTileProps();
+  // }
+  // if (tile_A_Object.imageObject) {
+  //   imageSourceArray = resetArray;
+  //   resetTileProps();
+  // }
 
-  assignTileId(tile_A_Object);
-  assignTileId(tile_B_Object);
-  assignTileId(tile_C_Object);
-  assignTileId(tile_D_Object);
-  assignTileId(tile_E_Object);
-  assignTileId(tile_F_Object);
-
-  assignImageSource(tile_A_Object, tile_A_Object.imageObject);
-  assignImageSource(tile_B_Object, tile_B_Object.imageObject);
-  assignImageSource(tile_C_Object, tile_C_Object.imageObject);
-  assignImageSource(tile_D_Object, tile_D_Object.imageObject);
-  assignImageSource(tile_E_Object, tile_E_Object.imageObject);
-  assignImageSource(tile_F_Object, tile_F_Object.imageObject);
+  assignImageObject(tileObjectArray, imageObjectArray);
+  assignTileId(tileObjectArray, tileIdArray);
+  assignImageSource(tileObjectArray);
 }
 // Function to assign tileId to tileObect
-function assignTileId(tileObject) {
-  tileObject.tileId = tileIdArray.shift();
+function assignTileId(tileObjectArray, imageSourceArray) {
+  let index = 0;
+  for (let tileObject of tileObjectArray) {
+    tileObject.tileId = imageSourceArray[index];
+    index++;
+    console.log("tileID:" + tileObject.tileId);
+  }
 }
 
 //  Functions to assign imageObjects to tileObjects and Get random image sources from array for img elements.
-function assignImageObject(tileObject) {
-  tileObject.imageObject = imageObjectArray.shift();
+function assignImageObject(tileObjectArray, imageObjectArray) {
+  let index = 0;
+  for (let tileObject of tileObjectArray) {
+    tileObject.imageObject = imageObjectArray[index];
+    index++;
+    console.log("imageObject:" + tileObject.imageObject);
+  }
 }
 // Logic to assign image sources to imageObect img html elements randomly.
-function assignImageSource(tileObject, imageObject) {
-  const tileImage = imageObject.imgElement;
-  const tileId = tileObject.tileId;
-  const imageSource = randomImageSource(imageSourceArray);
-  console.log(`i'm responsive guys :D`);
-
-  tileImage.setAttribute("class", "invisible");
-  tileImage.setAttribute("id", `${tileId}`);
-  tileImage.setAttribute("src", `${imageSource}`);
-  console.log(imageSourceArray);
-  tileObject.tile.appendChild(tileImage);
+function assignImageSource(tileObjectArray) {
+  for (let tileObject of tileObjectArray) {
+    const tileImage = tileObject.imageObject.imgElement;
+    const tileId = tileObject.tileId;
+    const imageSource = randomImageSource(imageSourceArray);
+    tileImage.setAttribute("class", "invisible");
+    tileImage.setAttribute("id", `${tileId}`);
+    tileImage.setAttribute("src", `${imageSource}`);
+    console.log(imageSourceArray);
+    tileObject.tile.appendChild(tileImage);
+    console.log(`image assigned`);
+  }
 }
 // Function to get random image
 function randomImageSource(array) {
@@ -205,8 +222,11 @@ function newRound() {
     console.log("new round");
     roundTracker.attempts = 0;
     console.log(roundTracker);
+    resetTiles();
   }
 }
+
+function resetTiles(array) {}
 
 // Utility functions
 // Increment tileGameProperties.tileCount
