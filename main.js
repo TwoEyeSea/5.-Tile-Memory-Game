@@ -62,8 +62,8 @@ const tileObjectArray = [tile_A_Object, tile_B_Object, tile_C_Object, tile_D_Obj
 const imageObjectArray = [imageObjectA1, imageObjectA2, imageObjectB1, imageObjectB2, imageObjectC1, imageObjectC2];
 
 // Image Sources for <img> elements
-let imageSourceArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
-let resetArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
+const imageSourceArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
+const resetArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
 // tileId's to place within tileObjects and img elements
 const tileIdArray = ["tileA", "tileB", "tileC", "tileD", "tileE", "tileF"];
 
@@ -76,7 +76,6 @@ determineTile();
 function TileObject(tile) {
   this.tile = tile;
   this.tileId = null;
-  // this.isSelected = false;
   this.isClickable = true;
   this.comparing = false;
   this.imageObject = null;
@@ -108,15 +107,14 @@ function ImageObject() {
 // Launch functions
 // Function to assign imageObjects to tileObjects and to assign image sources randomly to imageObject img elements
 function initTileObjects() {
-  // function to reset tile id
-  // if (!tile_A_Object.imageObject) {
-  //   initialTileProps();
-  // }
-  // if (tile_A_Object.imageObject) {
-  //   imageSourceArray = resetArray;
-  //   resetTileProps();
-  // }
-
+  if (!tile_A_Object.imageObject) {
+    initialTileProps(tileObjectArray);
+  }
+  // Function to reset tiles and randomly assign images again
+  if (tile_A_Object.imageObject) {
+    imageSourceArray.push(...resetArray);
+    resetTileProps(tileObjectArray);
+  }
   assignImageObject(tileObjectArray, imageObjectArray);
   assignTileId(tileObjectArray, tileIdArray);
   assignImageSource(tileObjectArray);
@@ -222,13 +220,27 @@ function newRound() {
     console.log("new round");
     roundTracker.attempts = 0;
     console.log(roundTracker);
-    resetTiles();
+    initTileObjects();
   }
 }
 
-function resetTiles(array) {}
-
 // Utility functions
+// Save Initial Tile Properties
+function initialTileProps(tileObjectArray) {
+  for (let tileObject of tileObjectArray) {
+    tileObject.init;
+    console.log("i'm initialized");
+  }
+}
+// Revert tileObject properties to initial state.
+function resetTileProps(tileObjectArray) {
+  for (let tileObject of tileObjectArray) {
+    const imgElement = document.querySelector(`#${tileObject.tileId}`);
+    imgElement.remove();
+    tileObject.reset;
+    console.log("i've been reset and image has been removed");
+  }
+}
 // Increment tileGameProperties.tileCount
 function updateGameProperties(tileObject) {
   if (!tileGameProperties.Initialized) {
@@ -269,7 +281,6 @@ function compareImages() {
 
     // ** function update your score
     newRound();
-    return tileGameProperties.reset();
   }
 
   console.log("unfortunatley you lose");

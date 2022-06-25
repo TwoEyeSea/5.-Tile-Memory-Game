@@ -1,18 +1,31 @@
 // playzone
 // function to switch from true to false - the thought is to toggle visibility of the imagesin the tiles
 
-itemA = { value: true };
+const tileA_div = document.querySelector("#tile-A");
+function TileObject(tile) {
+  this.tile = tile;
+  this.tileId = null;
+  // this.isSelected = false;
+  this.isClickable = true;
+  this.comparing = false;
+  this.imageObject = null;
 
-function swapper(item) {
-  const toFalse = false;
-  const toTrue = true;
-  return (item.value) ? (item.value = false) : (item.value = true);
-  console.log(item);
+  this.init = function () {
+    let initValues = {};
+    for (let property in this) {
+      if (this.hasOwnProperty(property) && property != "originalValues") {
+        initValues[property] = this[property];
+        console.log("I am indeed a functioning function :)");
+      }
+    }
+    this.initValues = initValues;
+  };
+  this.reset = function () {
+    for (let property in this.initValues) {
+      this[property] = this.initValues[property];
+      console.log("i'm a functional function after all!");
+    }
+  };
 }
 
-function setVisibility(item) {
-  if (swapper(item)) {
-    item = false;
-  }
-  item = true;
-}
+const tile_A_Object = new TileObject(tileA_div);
