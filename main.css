@@ -65,3 +65,7 @@ h1 {
 .invisible {
     visibility: hidden;
 }
+
+.score {
+ display: flex;
+}

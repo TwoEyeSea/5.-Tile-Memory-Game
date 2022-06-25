@@ -7,6 +7,8 @@ const tileC_div = document.querySelector("#tile-C");
 const tileD_div = document.querySelector("#tile-D");
 const tileE_div = document.querySelector("#tile-E");
 const tileF_div = document.querySelector("#tile-F");
+const userScore_div = document.querySelector("#user_score");
+const failedAttempts_div = document.querySelector("#failed_attempts");
 
 // Tile Objects
 const tile_A_Object = new TileObject(tileA_div);
@@ -23,6 +25,10 @@ const imageObjectB1 = new ImageObject();
 const imageObjectB2 = new ImageObject();
 const imageObjectC1 = new ImageObject();
 const imageObjectC2 = new ImageObject();
+
+// UI variables
+let score = 0;
+let attempts = 0;
 
 // Tile comparison Object
 const tileGameProperties = {
@@ -125,7 +131,6 @@ function assignTileId(tileObjectArray, imageSourceArray) {
   for (let tileObject of tileObjectArray) {
     tileObject.tileId = imageSourceArray[index];
     index++;
-    console.log("tileID:" + tileObject.tileId);
   }
 }
 
@@ -135,7 +140,6 @@ function assignImageObject(tileObjectArray, imageObjectArray) {
   for (let tileObject of tileObjectArray) {
     tileObject.imageObject = imageObjectArray[index];
     index++;
-    console.log("imageObject:" + tileObject.imageObject);
   }
 }
 // Logic to assign image sources to imageObect img html elements randomly.
@@ -147,9 +151,7 @@ function assignImageSource(tileObjectArray) {
     tileImage.setAttribute("class", "invisible");
     tileImage.setAttribute("id", `${tileId}`);
     tileImage.setAttribute("src", `${imageSource}`);
-    console.log(imageSourceArray);
     tileObject.tile.appendChild(tileImage);
-    console.log(`image assigned`);
   }
 }
 // Function to get random image
@@ -229,7 +231,6 @@ function newRound() {
 function initialTileProps(tileObjectArray) {
   for (let tileObject of tileObjectArray) {
     tileObject.init;
-    console.log("i'm initialized");
   }
 }
 // Revert tileObject properties to initial state.
@@ -276,10 +277,7 @@ function compareImages() {
   if (imgTile1 === imgTile2) {
     console.log("Congratulations you're a winner!");
 
-    //update roundTracker
-    roundTracker.attempts++;
-
-    // ** function update your score
+    winPoint();
     newRound();
   }
 
@@ -287,6 +285,7 @@ function compareImages() {
   roundTracker.attempts++;
   // **update failed attempts
   noPair();
+  failedAttempt();
   newRound();
   return tileGameProperties.reset();
 }
@@ -301,4 +300,14 @@ function noPair() {
   tileGameProperties.tile2.tile.classList.toggle("clickable");
   tileGameProperties.tile1.isClickable = true;
   tileGameProperties.tile2.isClickable = true;
+}
+
+function winPoint() {
+  score++;
+  userScore_div.innerHTML = score;
+}
+
+function failedAttempt() {
+  attempts++;
+  failedAttempts_div.innerHTML = attempts;
 }
