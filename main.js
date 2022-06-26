@@ -1,6 +1,7 @@
 // Constants
 
 // Define html elements as constants for javascript
+
 const tileA_div = document.querySelector("#tile-A");
 const tileB_div = document.querySelector("#tile-B");
 const tileC_div = document.querySelector("#tile-C");
@@ -9,6 +10,7 @@ const tileE_div = document.querySelector("#tile-E");
 const tileF_div = document.querySelector("#tile-F");
 const userScore_div = document.querySelector("#user_score");
 const failedAttempts_div = document.querySelector("#failed_attempts");
+const currentRound_div = document.querySelector("#round");
 
 // Tile Objects
 const tile_A_Object = new TileObject(tileA_div);
@@ -26,7 +28,13 @@ const imageObjectB2 = new ImageObject();
 const imageObjectC1 = new ImageObject();
 const imageObjectC2 = new ImageObject();
 
+// Image Sources
+const monkey = "/Images/monkey_small.jpg";
+const astronaut = "/Images/astronaut_small.jpg";
+const cat = "/Images/cat_small.jpg";
+
 // UI variables
+let currentRound = 1;
 let score = 0;
 let attempts = 0;
 
@@ -43,7 +51,6 @@ const tileGameProperties = {
     for (let property in this) {
       if (this.hasOwnProperty(property) && property != "originalValues") {
         initValues[property] = this[property];
-        console.log("I am indeed a functioning function :)");
       }
     }
     this.initValues = initValues;
@@ -51,13 +58,13 @@ const tileGameProperties = {
   reset: function () {
     for (let property in this.initValues) {
       this[property] = this.initValues[property];
-      console.log("i'm a functional function after all!");
     }
   },
 };
 
 const roundTracker = {
   // 4 attempts can be made per round
+  matches: 0,
   attempts: 0,
 };
 
@@ -68,8 +75,8 @@ const tileObjectArray = [tile_A_Object, tile_B_Object, tile_C_Object, tile_D_Obj
 const imageObjectArray = [imageObjectA1, imageObjectA2, imageObjectB1, imageObjectB2, imageObjectC1, imageObjectC2];
 
 // Image Sources for <img> elements
-const imageSourceArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
-const resetArray = ["cat", "cat", "ocelot", "ocelot", "dog", "dog"];
+const imageSourceArray = [cat, cat, monkey, monkey, astronaut, astronaut];
+const resetArray = [cat, cat, monkey, monkey, astronaut, astronaut];
 // tileId's to place within tileObjects and img elements
 const tileIdArray = ["tileA", "tileB", "tileC", "tileD", "tileE", "tileF"];
 
@@ -77,6 +84,7 @@ const tileIdArray = ["tileA", "tileB", "tileC", "tileD", "tileE", "tileF"];
 // Function on launch
 initTileObjects();
 determineTile();
+displayObjects(tileObjectArray);
 
 // TileObject Constructor Function
 function TileObject(tile) {
@@ -91,7 +99,7 @@ function TileObject(tile) {
     for (let property in this) {
       if (this.hasOwnProperty(property) && property != "originalValues") {
         initValues[property] = this[property];
-        console.log("I am indeed a functioning function :)");
+        console.log("tiles initialized");
       }
     }
     this.initValues = initValues;
@@ -99,7 +107,7 @@ function TileObject(tile) {
   this.reset = function () {
     for (let property in this.initValues) {
       this[property] = this.initValues[property];
-      console.log("i'm a functional function after all!");
+      console.log("tiles reset");
     }
   };
 }
@@ -212,16 +220,37 @@ function tileGame(tileObject) {
   }
 
   if (tileGameProperties.tileCount === 2) {
-    compareImages();
+    console.log("should timeout");
+    setTimeout(function () {
+      compareImages();
+    }, 1000);
   }
 }
 
+// function noClicking(array) {
+//   for (let object of array) {
+//     if (object.comparing) {
+//       object.isClickable = false;
+//     }
+//   }
+// }
+
 function newRound() {
   let round = 0;
+  if (roundTracker.matches > 2) {
+    console.log("new round");
+    roundTracker.matches = 0;
+    roundTracker.attempts = 0;
+    currentRound++;
+    currentRound_div.innerHTML = currentRound;
+    initTileObjects();
+  }
   if (roundTracker.attempts > 3) {
     console.log("new round");
+    roundTracker.matches = 0;
     roundTracker.attempts = 0;
-    console.log(roundTracker);
+    currentRound++;
+    currentRound_div.innerHTML = currentRound;
     initTileObjects();
   }
 }
@@ -230,7 +259,8 @@ function newRound() {
 // Save Initial Tile Properties
 function initialTileProps(tileObjectArray) {
   for (let tileObject of tileObjectArray) {
-    tileObject.init;
+    tileObject.init();
+    console.log("i'm initialized");
   }
 }
 // Revert tileObject properties to initial state.
@@ -238,8 +268,8 @@ function resetTileProps(tileObjectArray) {
   for (let tileObject of tileObjectArray) {
     const imgElement = document.querySelector(`#${tileObject.tileId}`);
     imgElement.remove();
-    tileObject.reset;
-    console.log("i've been reset and image has been removed");
+    tileObject.tile.classList.remove("comparing");
+    tileObject.reset();
   }
 }
 // Increment tileGameProperties.tileCount
@@ -275,15 +305,13 @@ function compareImages() {
   const imgTile2 = document.querySelector(`#${tileGameProperties.tile2.tileId}`).getAttribute("src");
 
   if (imgTile1 === imgTile2) {
-    console.log("Congratulations you're a winner!");
-
     winPoint();
+    roundTracker.matches++;
     newRound();
+    return tileGameProperties.reset();
   }
 
-  console.log("unfortunatley you lose");
   roundTracker.attempts++;
-  // **update failed attempts
   noPair();
   failedAttempt();
   newRound();
@@ -310,4 +338,11 @@ function winPoint() {
 function failedAttempt() {
   attempts++;
   failedAttempts_div.innerHTML = attempts;
+}
+
+// Dev tool functions
+function displayObjects(array) {
+  for (let object of array) {
+    console.log(object);
+  }
 }
