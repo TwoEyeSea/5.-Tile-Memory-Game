@@ -223,7 +223,7 @@ function tileGame(tileObject) {
     console.log("should timeout");
     setTimeout(function () {
       compareImages();
-    }, 1000);
+    }, 500);
   }
 }
 
@@ -245,7 +245,7 @@ function newRound() {
     currentRound_div.innerHTML = currentRound;
     initTileObjects();
   }
-  if (roundTracker.attempts > 3) {
+  if (roundTracker.attempts > 2) {
     console.log("new round");
     roundTracker.matches = 0;
     roundTracker.attempts = 0;
