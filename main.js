@@ -99,7 +99,6 @@ function TileObject(tile) {
     for (let property in this) {
       if (this.hasOwnProperty(property) && property != "originalValues") {
         initValues[property] = this[property];
-        console.log("tiles initialized");
       }
     }
     this.initValues = initValues;
@@ -107,7 +106,6 @@ function TileObject(tile) {
   this.reset = function () {
     for (let property in this.initValues) {
       this[property] = this.initValues[property];
-      console.log("tiles reset");
     }
   };
 }
@@ -223,7 +221,6 @@ function tileGame(tileObject) {
     for (let tileObject of tileObjectArray) {
       tileObject.isClickable = false;
     }
-    console.log("should timeout");
     setTimeout(function () {
       compareImages();
     }, 600);
@@ -241,7 +238,6 @@ function tileGame(tileObject) {
 function newRound() {
   let round = 0;
   if (roundTracker.matches > 2) {
-    console.log("new round");
     roundTracker.matches = 0;
     roundTracker.attempts = 0;
     currentRound++;
@@ -249,7 +245,6 @@ function newRound() {
     initTileObjects();
   }
   if (roundTracker.attempts > 2) {
-    console.log("new round");
     roundTracker.matches = 0;
     roundTracker.attempts = 0;
     currentRound++;
@@ -263,7 +258,6 @@ function newRound() {
 function initialTileProps(tileObjectArray) {
   for (let tileObject of tileObjectArray) {
     tileObject.init();
-    console.log("i'm initialized");
   }
 }
 // Revert tileObject properties to initial state.
@@ -302,7 +296,6 @@ function highlightTile(tileObject) {
 
 // Function to compare 2images within the tileGameProperties Object
 function compareImages() {
-  console.log("comparing");
   // constants for toggling img element class
   //constants for comparing img element sources
   const imgTile1 = document.querySelector(`#${tileGameProperties.tile1.tileId}`).getAttribute("src");
@@ -350,6 +343,5 @@ function failedAttempt() {
 // Dev tool functions
 function displayObjects(array) {
   for (let object of array) {
-    console.log(object);
   }
 }
