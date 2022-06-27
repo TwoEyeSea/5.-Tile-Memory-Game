@@ -220,10 +220,13 @@ function tileGame(tileObject) {
   }
 
   if (tileGameProperties.tileCount === 2) {
+    for (let tileObject of tileObjectArray) {
+      tileObject.isClickable = false;
+    }
     console.log("should timeout");
     setTimeout(function () {
       compareImages();
-    }, 500);
+    }, 600);
   }
 }
 
@@ -299,11 +302,15 @@ function highlightTile(tileObject) {
 
 // Function to compare 2images within the tileGameProperties Object
 function compareImages() {
+  console.log("comparing");
   // constants for toggling img element class
   //constants for comparing img element sources
   const imgTile1 = document.querySelector(`#${tileGameProperties.tile1.tileId}`).getAttribute("src");
   const imgTile2 = document.querySelector(`#${tileGameProperties.tile2.tileId}`).getAttribute("src");
 
+  for (let tileObject of tileObjectArray) {
+    tileObject.isClickable = true;
+  }
   if (imgTile1 === imgTile2) {
     winPoint();
     roundTracker.matches++;
